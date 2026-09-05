@@ -1,0 +1,1939 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MIA XATSPACE</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Phosphor Icons (Librería de iconos moderna y limpia) -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <!-- Boucing Pink Bow Tie Ribbon - https://www.cursors-4u.com/cursor/boucing-pink-bow-tie-ribbon --> 
+    <link rel="stylesheet" href="https://cdn.cursors-4u.net/cursors/animated/boucing-pink-bow-tie-ribbon-da645d24-32.css"> 
+    <!-- End www.Cursors-4U.com Code -->
+
+    <style>
+        /* =========================================
+           CURSOR ANIMADO GLOBAL
+           ========================================= */
+        /* Hacemos que los elementos interactivos hereden el cursor del body (el lazo rosa inyectado por el link) */
+        a, button, .sidebar-icon, .dock-icon, .card, .calendar-day, .friend-card, .glass-button, .carousel-btn, .sp-controls i, .sp-progress-bar, .sp-track, .heart-photo, .carousel-track {
+            cursor: inherit !important;
+        }
+
+        /* =========================================
+           VARIABLES Y PALETA DE COLORES PASTEL
+           ========================================= */
+        :root {
+            --pastel-pink: #ffd6f3;
+            --pastel-purple-light: #f6e4ff;
+            --pastel-purple-mid: #e3d5ff;
+            --pastel-pink-dark: #ffc8ec;
+            --pastel-purple-dark: #d6c6ff;
+            
+            --text-main: #5a4b73;
+            --text-muted: #8b7ca6;
+            
+            --glass-bg: rgba(255, 255, 255, 0.60); /* Transparencia reducida */
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --glass-shadow: rgba(214, 198, 255, 0.35);
+            --glass-highlight: rgba(255, 255, 255, 0.8);
+        }
+
+        /* =========================================
+           RESETEO Y ESTILOS BASE
+           ========================================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+            user-select: none;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh; /* Soporte para mobile browsers URL bar */
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-main);
+            background-color: var(--pastel-pink);
+            
+            /* NUEVO: Padding top para futuro banner */
+            padding-top: 65px; 
+        }
+
+        /* Filtro oscuro sutil para mejorar el contraste con el fondo */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.18); /* Oscurecido ligeramente para mejor contraste */
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Fondo estilo ciudad anime desenfocada */
+        .background-image {
+            position: absolute;
+            top: -5%;
+            left: -5%;
+            width: 110%;
+            height: 110%;
+            /* Nueva imagen de fondo proporcionada */
+            background-image: url('https://i.imgur.com/9aJ1juX.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            /* Blur reducido considerablemente para mayor claridad */
+            filter: blur(3px) brightness(1.05) saturate(1.1);
+            z-index: -1;
+        }
+
+        /* Overlay para asegurar que la paleta pastel domine */
+        .background-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 214, 243, 0.4) 0%, rgba(227, 213, 255, 0.4) 100%);
+            z-index: -1;
+        }
+
+        /* =========================================
+           COMPONENTES GLASSMORPHISM
+           ========================================= */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.16);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.30);
+            border-top: 1px solid var(--glass-highlight);
+            border-left: 1px solid var(--glass-highlight);
+            box-shadow: 0 16px 40px var(--glass-shadow);
+            border-radius: 32px;
+        }
+
+        .glass-inner {
+            background: rgba(255, 255, 255, 0.10); /* Ligeramente más transparente para elementos internos */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 20px;
+            box-shadow: inset 0 2px 10px rgba(255, 255, 255, 0.1), 0 4px 15px rgba(214, 198, 255, 0.1);
+        }
+
+        /* =========================================
+           LAYOUT PRINCIPAL DEL ESCRITORIO
+           ========================================= */
+        .desktop-container {
+            width: 92vw;
+            height: 88vh;
+            height: 88dvh;
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            grid-template-rows: 1fr; /* Eliminamos la fila inferior del dock */
+            gap: 24px;
+            position: relative;
+            z-index: 1; /* Asegura que se sitúe sobre el filtro oscuro del body */
+        }
+
+        /* Barra Lateral Izquierda (Redes Sociales) */
+        .sidebar {
+            grid-column: 1;
+            grid-row: 1 / 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px 0;
+            gap: 25px;
+            border-radius: 40px;
+            box-shadow: 0 10px 30px var(--glass-shadow);
+        }
+
+        .sidebar-icon {
+            font-size: 28px;
+            color: var(--text-main);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .sidebar-icon:hover {
+            background: var(--pastel-pink);
+            color: #fff;
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 8px 15px rgba(255, 200, 236, 0.6);
+        }
+
+        .home-nav-icon {
+            margin-bottom: 20px;
+            background: var(--pastel-purple-mid);
+            color: #fff;
+        }
+
+        /* Panel Central Grande */
+        .main-workspace {
+            grid-column: 2;
+            grid-row: 1 / 2;
+            /* Flexbox trasladado a los contenedores de vistas internas */
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* =========================================
+           SECCIÓN IZQUIERDA (Reloj y Calendario)
+           ========================================= */
+        .left-widgets {
+            width: 280px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Reducido ligeramente para evitar choques con el calendario más bajo */
+            z-index: 2;
+        }
+
+        .time-display {
+            padding: 20px;
+        }
+
+        .time-display h1 {
+            font-size: 5rem;
+            font-weight: 300;
+            line-height: 1;
+            letter-spacing: 2px;
+            background: linear-gradient(135deg, var(--text-main), var(--pastel-purple-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 10px rgba(255,255,255,0.5);
+        }
+
+        .time-display p {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-top: 5px;
+            letter-spacing: 1px;
+        }
+
+        /* AJUSTE CALENDARIO: Reducción de tamaño y espaciado */
+        .calendar-widget {
+            padding: 15px 15px; /* Paddings reducidos */
+            padding-bottom: 20px; 
+            margin: 15px auto; /* Separado del card superior e inferior */
+            width: 85%; /* Reducción de tamaño para que no quede pegado */
+            height: auto;
+            min-height: 250px; /* Reducción de altura mínima */
+            overflow: visible;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 1.1rem; /* Ligeramente más pequeño */
+            margin-bottom: 10px; 
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(255,255,255,0.5);
+            color: var(--text-main);
+        }
+
+        .cal-nav-btn {
+            cursor: pointer;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .cal-nav-btn:hover {
+            background: var(--pastel-pink);
+            color: #fff;
+            transform: scale(1.1);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px; /* Gap ajustado */
+            text-align: center;
+            font-size: 0.75rem; /* Tipografía más pequeña */
+            transform: scale(0.9); /* Escala más reducida */
+            transform-origin: top center;
+        }
+
+        .calendar-day-name {
+            font-weight: 600;
+            color: var(--pastel-purple-dark);
+            margin-bottom: 3px;
+        }
+
+        .calendar-day {
+            width: 25px; 
+            height: 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .calendar-day:hover {
+            background: rgba(255, 255, 255, 0.8);
+            transform: scale(1.1);
+        }
+
+        .calendar-day.active {
+            background: var(--pastel-pink-dark);
+            color: #fff;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(255, 200, 236, 0.5);
+        }
+
+        /* =========================================
+           PERSONAJE CENTRAL
+           ========================================= */
+        .center-character {
+            position: absolute;
+            bottom: -20px;
+            left: 45%;
+            transform: translateX(-50%);
+            height: 110%;
+            pointer-events: none; /* Para que no bloquee clics detrás */
+            z-index: 1;
+            display: flex;
+            align-items: flex-end;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateX(-50%) translateY(0px); }
+            50% { transform: translateX(-50%) translateY(-15px); }
+            100% { transform: translateX(-50%) translateY(0px); }
+        }
+
+        /* Render PNG de personaje anime kawaii (Placeholder de Imgur seguro) */
+        .center-character img {
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 20px 30px rgba(139, 124, 166, 0.3));
+        }
+
+        .vertical-text {
+            position: absolute;
+            right: -40px;
+            top: 20%;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 5px;
+            color: var(--pastel-purple-dark);
+            opacity: 0.7;
+        }
+
+        /* =========================================
+           SECCIÓN DERECHA (Widgets y Perfil)
+           ========================================= */
+        .right-widgets {
+            width: 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 2;
+        }
+
+        .profile-header {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .profile-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 15px;
+            border-radius: 30px;
+            font-weight: 600;
+        }
+
+        .profile-pic {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: var(--pastel-purple-dark);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            overflow: hidden; /* Asegura el recorte circular de la imagen .gif */
+        }
+
+        /* NUEVO: Estilos para la imagen de perfil GIF */
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .profile-pic:hover img {
+            transform: scale(1.2);
+        }
+
+        /* Contenedor del nuevo saludo "MIA" */
+        .greeting-wrapper {
+            align-self: flex-end;
+            position: relative;
+            margin-bottom: 5px;
+            padding-right: 5px;
+        }
+
+        /* Texto animado MIA */
+        .mia-text {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: 4px;
+            background: linear-gradient(270deg, var(--pastel-pink), var(--pastel-purple-dark), #fff, var(--pastel-pink));
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: miaGradientAnim 5s ease infinite;
+            text-shadow: 2px 2px 20px rgba(255, 200, 236, 0.4);
+            margin: 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes miaGradientAnim {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Efecto Glitter/Sparkle sobre MIA */
+        .mia-sparkle {
+            position: absolute;
+            pointer-events: none;
+            filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.9));
+            animation: miaSparkleAnim 2s infinite ease-in-out;
+            opacity: 0;
+            z-index: 3;
+        }
+
+        @keyframes miaSparkleAnim {
+            0% { transform: scale(0) rotate(0deg); opacity: 0; }
+            50% { transform: scale(1.2) rotate(90deg); opacity: 1; }
+            100% { transform: scale(0) rotate(180deg); opacity: 0; }
+        }
+
+        /* Grid de Tarjetas (Imágenes aesthetic) */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 160px 100px;
+            gap: 15px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.16);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.30);
+            overflow: hidden;
+            position: relative;
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 5px 15px rgba(214, 198, 255, 0.3);
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(255, 200, 236, 0.5);
+            border: 2px solid var(--glass-highlight);
+        }
+
+        .card:hover img {
+            transform: scale(1.1);
+        }
+
+        .card-tall-1 { grid-column: 1; grid-row: 1 / 3; }
+        .card-tall-2 { grid-column: 2; grid-row: 1; }
+        .card-square { grid-column: 2; grid-row: 2; }
+
+        /* =========================================
+           REPRODUCTOR DE MÚSICA (GLASSMORPHISM PASTEL)
+           ========================================= */
+        .spotify-widget {
+            position: absolute;
+            left: 120px;
+            top: 110px;
+            width: 280px;
+            background: rgba(255, 255, 255, 0.16);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.30);
+            border-radius: 24px;
+            padding: 20px;
+            color: var(--text-main);
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(-20px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 15px 35px var(--glass-shadow);
+        }
+
+        .spotify-widget.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+        }
+
+        .sp-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .sp-cover {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            object-fit: cover;
+            box-shadow: 0 5px 15px rgba(214, 198, 255, 0.4);
+        }
+
+        .sp-info h4 {
+            font-size: 0.95rem;
+            margin: 0 0 4px 0;
+            font-weight: 600;
+        }
+
+        .sp-info p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .sp-progress-container {
+            margin-bottom: 20px;
+        }
+
+        .sp-progress-bar {
+            width: 100%;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .sp-progress-fill {
+            width: 0%;
+            height: 100%;
+            background: #cdb7ff; /* Lila pastel */
+            border-radius: 5px;
+            transition: width 0.3s linear;
+        }
+
+        .sp-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .sp-controls i {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            transition: all 0.2s;
+        }
+
+        .sp-controls i:hover {
+            color: var(--text-main);
+            transform: scale(1.1);
+        }
+
+        .sp-controls .play-btn {
+            font-size: 2.2rem;
+            color: #f6c1ff; /* Rosa pastel */
+        }
+
+        .sp-controls .play-btn:hover {
+            transform: scale(1.15);
+            color: #f6c1ff;
+            filter: brightness(0.95);
+        }
+
+        /* NUEVO: ESTILOS DEL CONTROL DE VOLUMEN */
+        .sp-volume-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding: 0 10px;
+        }
+
+        .sp-volume-container i {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .sp-volume-container i:hover {
+            color: var(--text-main);
+        }
+
+        .volume-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 5px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #cdb7ff;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .volume-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.3);
+            background: #f6c1ff;
+        }
+
+        .volume-slider::-moz-range-thumb {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #cdb7ff;
+            cursor: pointer;
+            border: none;
+        }
+
+        .sp-tracklist {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sp-track {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+
+        .sp-track:hover {
+            background: rgba(246, 193, 255, 0.3); /* Rosa pastel suave translúcido */
+        }
+
+        .sp-track.active {
+            background: rgba(205, 183, 255, 0.4); /* Fondo lila translúcido */
+        }
+
+        .sp-track.active span {
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .sp-track i {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+
+        .sp-track.active i {
+            color: #cdb7ff; /* Lila pastel */
+        }
+
+        .sp-track span {
+            font-size: 0.85rem;
+            color: var(--text-main);
+        }
+
+        /* =========================================
+           VISTAS INTERNAS (HOME / YOUTUBE)
+           ========================================= */
+        .view-container {
+            display: none;
+            width: 100%;
+            height: 100%;
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .home-layout.active {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .youtube-layout.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .yt-header {
+            width: 90%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .yt-header h2 {
+            font-size: 1.5rem;
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        .glass-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.30);
+            background: rgba(255, 255, 255, 0.16);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            color: var(--text-main);
+            font-weight: 600;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(214, 198, 255, 0.2);
+        }
+
+        .glass-button:hover {
+            background: var(--pastel-pink);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 200, 236, 0.5);
+        }
+
+        .yt-iframe-wrapper {
+            width: 90%;
+            height: 80%;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px var(--glass-shadow);
+            border: 1px solid rgba(255, 255, 255, 0.30);
+            background: rgba(255, 255, 255, 0.16);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .yt-iframe-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* =========================================
+           VISTA INSTAGRAM (GALERÍA DE IMÁGENES)
+           ========================================= */
+        .instagram-layout.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 10px;
+            padding: 20px 40px;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+        }
+
+        .instagram-gallery-wrapper {
+            width: 100%;
+            flex: 1;
+            padding: 28px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .carousel-wrapper {
+            position: relative;
+            width: 88%;
+            max-width: 480px;
+            aspect-ratio: 1 / 1;
+            margin: 12px auto;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            box-sizing: border-box;
+            box-shadow: 0 15px 35px var(--glass-shadow);
+            border: 2px solid var(--glass-highlight);
+            overflow: visible;
+        }
+
+        .carousel-track-container {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            border-radius: 14px; /* Asegura el borde interno redondeado */
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-track {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            display: flex;
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* AJUSTE GALERÍA: Imágenes respetan la proporción sin cortarse */
+        .carousel-slide img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto; /* Permite ajustarse sin deformar el ancho */
+            height: 100%; /* Toma el máximo del contenedor padre */
+            object-fit: contain; /* Garantiza que la imagen nunca se recorte y respete su relación de aspecto */
+            border-radius: 14px;
+            cursor: zoom-in; /* Indica interactividad de zoom */
+            background-color: transparent;
+        }
+
+        /* --- ESTILOS DEL LIGHTBOX (ZOOM DE GALERÍA) --- */
+        .lightbox-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(15, 10, 25, 0.85); /* Fondo oscuro semitransparente pastel */
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .lightbox-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .lightbox-content {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox-overlay img {
+            max-width: 90vw;
+            max-height: 85vh;
+            object-fit: contain;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            transform: scale(0.8);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .lightbox-overlay.active img {
+            transform: scale(1);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            font-size: 2.5rem;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 100000;
+        }
+
+        .lightbox-close:hover {
+            color: var(--pastel-pink-dark);
+            transform: scale(1.1) rotate(90deg);
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.22);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.30);
+            color: var(--text-main);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px var(--glass-shadow);
+        }
+
+        .carousel-btn:hover {
+            background: var(--pastel-pink);
+            color: #fff;
+            box-shadow: 0 8px 20px rgba(255, 200, 236, 0.6);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .prev-btn { left: -20px; }
+        .next-btn { right: -20px; }
+
+        /* =========================================
+           VISTA CORAZÓN / FAVORITES (NUEVA)
+           ========================================= */
+        .heart-layout.active {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 20px;
+            padding: 20px 40px;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden; /* Para contener las partículas */
+        }
+
+        .heart-content {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            align-items: center;
+            justify-content: center;
+            z-index: 5;
+        }
+
+        .heart-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            width: 55%;
+            z-index: 2;
+        }
+
+        .heart-photo {
+            width: 100%;
+            height: 170px;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px var(--glass-shadow);
+            border: 2px solid var(--glass-highlight);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            /* Permitir que el cursor nativo de zoom aparezca también aquí si se desea, 
+               aunque respeta el global del lazo rosa */
+        }
+
+        .heart-photo:hover {
+            transform: scale(1.08) rotate(-2deg);
+            z-index: 10;
+        }
+
+        /* Partículas animadas de Corazón (Estilo Anime / Visual Novel) */
+        #particles-container {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .anime-heart-container {
+            position: absolute;
+            pointer-events: none;
+            animation: floatAnime 14s linear infinite;
+            opacity: 0;
+        }
+
+        .anime-heart {
+            /* Efecto glow suave que toma el color de la partícula */
+            filter: drop-shadow(0 0 10px currentColor);
+            animation: swayAnime 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes floatAnime {
+            0% { transform: translateY(110vh) scale(0.6); opacity: 0; }
+            15% { opacity: 0.85; }
+            85% { opacity: 0.85; }
+            100% { transform: translateY(-20vh) scale(1.2); opacity: 0; }
+        }
+
+        @keyframes swayAnime {
+            0% { transform: translateX(-25px) rotate(-15deg); }
+            100% { transform: translateX(25px) rotate(15deg); }
+        }
+
+        /* Partículas del Cursor (Destellos Anime) */
+        .anime-sparkle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.9));
+            animation: sparkleAnim 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        @keyframes sparkleAnim {
+            0% { opacity: 0; transform: scale(0) rotate(0deg); }
+            40% { opacity: 1; transform: scale(1.2) rotate(45deg); }
+            100% { opacity: 0; transform: scale(0) rotate(90deg); }
+        }
+
+        /* =========================================
+           FOOTER FIRMA
+           ========================================= */
+        .footer-signature {
+            position: absolute;
+            bottom: 8px;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            width: max-content;
+            text-align: center;
+            font-size: 0.65rem;
+            font-weight: 500;
+            color: var(--text-main);
+            opacity: 0.25;
+            letter-spacing: 1px;
+            z-index: 100;
+            transition: opacity 0.4s ease, text-shadow 0.4s ease;
+        }
+
+        .footer-signature:hover {
+            opacity: 0.9;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+        }
+
+        /* =========================================
+           RESPONSIVE DESIGN (MÓVILES Y TABLETS)
+           ========================================= */
+        @media screen and (max-width: 1024px) {
+            .desktop-container {
+                width: 96vw;
+                height: 94dvh;
+                grid-template-columns: 70px 1fr;
+                gap: 15px;
+            }
+            .center-character {
+                left: 50%;
+                height: 100%;
+            }
+            .left-widgets { width: 240px; }
+            .right-widgets { width: 260px; }
+            
+            /* NUEVO: Ocultar completamente la firma en tablets y móviles */
+            .footer-signature {
+                display: none;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            body {
+                height: 100dvh; /* Adaptación extra para Safari/iOS */
+                overflow: hidden;
+            }
+            .desktop-container {
+                grid-template-columns: 1fr;
+                grid-template-rows: 1fr auto; /* Workspace arriba, sidebar dock abajo */
+                width: 95vw;
+                height: 96dvh;
+                gap: 15px;
+            }
+            .sidebar {
+                grid-column: 1;
+                grid-row: 2;
+                flex-direction: row;
+                justify-content: space-evenly;
+                padding: 15px 10px;
+                border-radius: 25px;
+                height: auto;
+            }
+            .home-nav-icon {
+                margin-bottom: 0 !important;
+            }
+            .sidebar-icon {
+                width: 45px;
+                height: 45px;
+                font-size: 24px;
+            }
+            .main-workspace {
+                grid-column: 1;
+                grid-row: 1;
+                padding: 20px;
+                overflow-y: auto; /* Scroll vertical fluido en móviles */
+                overflow-x: hidden;
+            }
+            .home-layout.active {
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+                gap: 35px;
+            }
+            .left-widgets, .right-widgets {
+                width: 100%;
+                max-width: 400px;
+                align-items: center;
+            }
+            .time-display { text-align: center; }
+        .time-display p { text-align: center; }
+        .greeting-wrapper { align-self: center; }
+        
+        /* Ajuste extra calendario en móvil para el tamaño nuevo */
+        .calendar-widget { min-height: 220px; width: 95%; margin: 10px auto; }
+        
+        /* Ajuste del personaje para integrarse verticalmente en móvil */
+            .center-character {
+                position: relative; 
+                height: 350px;
+                bottom: 0;
+                left: 0;
+                transform: none;
+                margin: -20px 0;
+                animation: floatMobile 6s ease-in-out infinite;
+                z-index: 0;
+            }
+            @keyframes floatMobile {
+                0% { transform: translateY(0px); }
+                50% { transform: translateY(-10px); }
+                100% { transform: translateY(0px); }
+            }
+            
+            .cards-grid {
+                width: 100%;
+                grid-template-columns: 1fr 1fr;
+                grid-template-rows: 140px 100px;
+            }
+
+            /* Reproductor de música emergente centrado en móviles */
+            .spotify-widget {
+                position: fixed;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%) scale(0.9) !important;
+                width: 85%;
+                max-width: 320px;
+                z-index: 1000;
+            }
+            .spotify-widget.active {
+                transform: translate(-50%, -50%) scale(1) !important;
+            }
+            
+            /* Vistas internas adaptadas al ancho */
+            .yt-iframe-wrapper { height: 40vh; width: 100%; }
+            
+            .instagram-layout.active { padding: 20px 10px; }
+            .instagram-gallery-wrapper { padding: 10px; }
+            .carousel-wrapper { width: 100%; margin: 0; }
+            
+            .heart-layout.active { padding: 20px 10px; }
+            .heart-grid { width: 100%; }
+            
+            /* Textos proporcionados */
+            .mia-text { font-size: 2.8rem; }
+            .time-display h1 { font-size: 4rem; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Capas de Fondo -->
+    <div class="background-image"></div>
+    <div class="background-overlay"></div>
+
+    <!-- Contenedor Principal del Escritorio -->
+    <main class="desktop-container">
+
+        <!-- Barra Lateral Izquierda -->
+        <aside class="sidebar glass-panel">
+            <div class="sidebar-icon home-nav-icon" id="home-nav-btn">
+                <i class="ph ph-house"></i>
+            </div>
+            <div class="sidebar-icon" id="music-toggle-btn"><i class="ph ph-music-notes"></i></div>
+            <div class="sidebar-icon" id="youtube-toggle-btn"><i class="ph ph-youtube-logo"></i></div>
+            <div class="sidebar-icon" id="instagram-toggle-btn"><i class="ph ph-instagram-logo"></i></div>
+            <div class="sidebar-icon" id="heart-toggle-btn"><i class="ph ph-heart"></i></div> <!-- Icono cambiado a Corazón -->
+        </aside>
+
+        <!-- Nuevo Recuadro Reproductor Spotify (Oculto por defecto) -->
+        <div class="spotify-widget" id="spotify-widget">
+            <!-- AJUSTE AUDIO: Ruta relativa confirmada -->
+            <audio id="audio-player" src="./track.mp3" preload="auto"></audio>
+            
+            <div class="sp-header">
+                <!-- Portada mini estética local -->
+                <img src="cover.jpg" class="sp-cover" alt="Cover" onerror="this.src='https://placehold.co/50x50/e3d5ff/5a4b73?text=Cover'">
+                <div class="sp-info">
+                    <h4 id="sp-current-title">Tercer Cielo - Toma Mi Mano</h4>
+                    <p>Mi Canción Especial</p>
+                </div>
+            </div>
+            <div class="sp-progress-container">
+                <div class="sp-progress-bar">
+                    <div class="sp-progress-fill" id="sp-progress-fill"></div>
+                </div>
+            </div>
+            <div class="sp-controls">
+                <i class="ph ph-skip-back-circle"></i>
+                <i class="ph ph-play-circle play-btn" id="sp-play-pause"></i>
+                <i class="ph ph-skip-forward-circle"></i>
+            </div>
+            
+            <!-- NUEVO: Control de Volumen -->
+            <div class="sp-volume-container">
+                <i class="ph ph-speaker-high" id="volume-icon"></i>
+                <input type="range" id="volume-slider" class="volume-slider" min="0" max="1" step="0.01" value="1">
+            </div>
+
+            <!-- SE ELIMINÓ EL TRACKLIST INFERIOR REPETIDO -->
+        </div>
+
+        <!-- Espacio de Trabajo Central -->
+        <section class="main-workspace glass-panel">
+
+            <!-- VISTA HOME (Original) -->
+            <div id="home-view" class="view-container home-layout active">
+
+                <!-- Widgets Izquierdos -->
+                <div class="left-widgets">
+                    <div class="time-display">
+                        <h1 id="clock">00:00</h1>
+                        <p id="date-display">Lunes<br>01 de Enero</p>
+                    </div>
+                    
+                    <div class="calendar-widget glass-inner">
+                        <div class="calendar-header">
+                            <i class="ph ph-caret-left cal-nav-btn" id="prev-month"></i>
+                            <span id="calendar-month">Mayo 2026</span>
+                            <i class="ph ph-caret-right cal-nav-btn" id="next-month"></i>
+                        </div>
+                        <div class="calendar-grid">
+                            <div class="calendar-day-name">D</div>
+                            <div class="calendar-day-name">L</div>
+                            <div class="calendar-day-name">M</div>
+                            <div class="calendar-day-name">M</div>
+                            <div class="calendar-day-name">J</div>
+                            <div class="calendar-day-name">V</div>
+                            <div class="calendar-day-name">S</div>
+                            <!-- Los días se generan con JavaScript -->
+                            <div id="calendar-days" style="display: contents;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Personaje Anime Central -->
+                <div class="center-character">
+                    <!-- Se utiliza el nuevo render de Emilia, manteniendo la animación y estilos de máscara base -->
+                    <img src="https://i.ibb.co/4nHCdzs3/Emilia-Media-Elfa.webp" 
+                         style="border-radius: 40px; mask-image: linear-gradient(to bottom, black 80%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);" 
+                         alt="Emilia Anime Character">
+                    <div class="vertical-text">カワイイ</div>
+                </div>
+
+                <!-- Widgets Derechos -->
+                <div class="right-widgets">
+                    <div class="profile-header">
+                        <div class="profile-badge glass-inner">
+                            <span>iMiaa</span>
+                            <div class="profile-pic">
+                                <!-- Reemplazado icono de avatar por la imagen GIF de perfil -->
+                                <img src="profile.gif" onerror="this.src='https://placehold.co/35x35/d6c6ff/5a4b73?text=M'" alt="Profile GIF">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nuevo encabezado MIA con efecto glitter -->
+                    <div class="greeting-wrapper">
+                        <h2 class="mia-text">MIA</h2>
+                        <i class="ph-fill ph-star-four mia-sparkle" style="top: -5px; left: -15px; animation-delay: 0s; font-size: 1.2rem; color: var(--pastel-pink-dark);"></i>
+                        <i class="ph-fill ph-sparkle mia-sparkle" style="bottom: 5px; right: -25px; animation-delay: 1.2s; font-size: 1.5rem; color: var(--pastel-purple-light);"></i>
+                        <i class="ph-fill ph-star-four mia-sparkle" style="top: 40%; left: 45%; animation-delay: 0.6s; font-size: 1rem; color: #fff;"></i>
+                    </div>
+
+                    <div class="cards-grid">
+                        <!-- Imágenes Aesthetic (GIFs animados intactos) -->
+                        <div class="card card-tall-1">
+                            <img src="https://i.imgur.com/RVLAN4C.gif" alt="Aesthetic GIF 1">
+                        </div>
+                        <div class="card card-tall-2">
+                            <img src="https://i.imgur.com/0BoAVtK.gif" alt="Aesthetic GIF 2">
+                        </div>
+                        <div class="card card-square">
+                            <img src="https://i.imgur.com/RECTDoO.gif" alt="Aesthetic GIF 3">
+                        </div>
+                    </div>
+                </div>
+
+            </div> <!-- Fin de Vista Home -->
+
+            <!-- VISTA YOUTUBE (Nueva) -->
+            <div id="youtube-view" class="view-container youtube-layout">
+                <div class="yt-header">
+                    <button id="back-to-home-btn" class="glass-button">
+                        <i class="ph ph-arrow-left"></i> Volver
+                    </button>
+                    <h2>Youtube Video</h2>
+                </div>
+                <div class="yt-iframe-wrapper">
+                    <iframe src="https://www.youtube.com/embed/E4XLXEg2rg8" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+
+            <!-- VISTA INSTAGRAM (Nueva - Imágenes preparadas locales) -->
+            <div id="instagram-view" class="view-container instagram-layout">
+                <div class="yt-header" style="width: 100%;">
+                    <button id="back-to-home-btn-ig" class="glass-button">
+                        <i class="ph ph-arrow-left"></i> Volver
+                    </button>
+                    <h2>Galería</h2>
+                </div>
+                
+                <!-- Nuevo contenedor Wrapper para proteger los bordes de la galería -->
+                <div class="instagram-gallery-wrapper">
+                    <div class="carousel-wrapper glass-inner">
+                        <button class="carousel-btn prev-btn" id="ig-prev"><i class="ph ph-caret-left"></i></button>
+                        
+                        <div class="carousel-track-container">
+                            <ul class="carousel-track" id="ig-track">
+                                <li class="carousel-slide"><img src="gallery1.jpg" onerror="this.src='https://placehold.co/480x480/e3d5ff/5a4b73?text=Gallery+1'" alt="Gallery Image 1"></li>
+                                <li class="carousel-slide"><img src="gallery2.jpg" onerror="this.src='https://placehold.co/480x480/ffd6f3/5a4b73?text=Gallery+2'" alt="Gallery Image 2"></li>
+                                <li class="carousel-slide"><img src="gallery3.jpg" onerror="this.src='https://placehold.co/480x480/f6e4ff/5a4b73?text=Gallery+3'" alt="Gallery Image 3"></li>
+                                <li class="carousel-slide"><img src="gallery4.jpg" onerror="this.src='https://placehold.co/480x480/ffc8ec/5a4b73?text=Gallery+4'" alt="Gallery Image 4"></li>
+                                <li class="carousel-slide"><img src="gallery5.jpg" onerror="this.src='https://placehold.co/480x480/d6c6ff/5a4b73?text=Gallery+5'" alt="Gallery Image 5"></li>
+                            </ul>
+                        </div>
+
+                        <button class="carousel-btn next-btn" id="ig-next"><i class="ph ph-caret-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VISTA CORAZÓN / FAVORITES (Nueva - Imágenes preparadas locales) -->
+            <div id="heart-view" class="view-container heart-layout">
+                <!-- Contenedor de partículas -->
+                <div id="particles-container"></div>
+                
+                <div class="yt-header" style="width: 100%; z-index: 10;">
+                    <button id="back-to-home-btn-heart" class="glass-button">
+                        <i class="ph ph-arrow-left"></i> Volver
+                    </button>
+                    <h2>MIA&REK♥</h2>
+                </div>
+                
+                <div class="heart-content">
+                    <!-- Grid de fotos -->
+                    <div class="heart-grid">
+                        <img src="heart1.jpg" onerror="this.src='https://placehold.co/300x300/ffd6f3/5a4b73?text=Heart+1'" class="heart-photo" alt="Favorite 1">
+                        <img src="heart2.jpg" onerror="this.src='https://placehold.co/300x300/e3d5ff/5a4b73?text=Heart+2'" class="heart-photo" alt="Favorite 2">
+                        <img src="heart3.jpg" onerror="this.src='https://placehold.co/300x300/f6e4ff/5a4b73?text=Heart+3'" class="heart-photo" alt="Favorite 3">
+                        <img src="heart4.png" onerror="this.src='https://placehold.co/300x300/ffc8ec/5a4b73?text=Heart+4'" class="heart-photo" alt="Favorite 4">
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Contenedor Lightbox para el Zoom de la Galería -->
+    <div id="image-lightbox" class="lightbox-overlay">
+        <div class="lightbox-content">
+            <i class="ph ph-x lightbox-close" id="lightbox-close-btn"></i>
+            <img id="lightbox-img" src="" alt="Zoomed Image">
+        </div>
+    </div>
+
+    <!-- Firma en el footer -->
+    <div class="footer-signature">©2026 Eam96 Xatspace Design.</div>
+
+    <!-- =========================================
+         JAVASCRIPT PARA LÓGICA E INTERACCIONES
+         ========================================= -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- 1. Lógica del Reloj en Tiempo Real ---
+            const clockElement = document.getElementById('clock');
+            const dateElement = document.getElementById('date-display');
+
+            const daysEs = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+            const monthsEs = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+            function updateTime() {
+                const now = new Date();
+                
+                // Formato de hora (HH:MM)
+                let hours = now.getHours().toString().padStart(2, '0');
+                let minutes = now.getMinutes().toString().padStart(2, '0');
+                if (clockElement) clockElement.textContent = `${hours}:${minutes}`;
+
+                // Formato de fecha (Español, 2 líneas)
+                const dayName = daysEs[now.getDay()];
+                const monthName = monthsEs[now.getMonth()];
+                const dayNum = now.getDate();
+                
+                if (dateElement) dateElement.innerHTML = `${dayName}<br>${dayNum} de ${monthName}`;
+            }
+
+            setInterval(updateTime, 1000);
+            updateTime(); // Llamada inicial
+
+
+            // --- 2. Generación Dinámica del Calendario ---
+            const calendarDaysContainer = document.getElementById('calendar-days');
+            const calendarMonthElement = document.getElementById('calendar-month');
+            const prevMonthBtn = document.getElementById('prev-month');
+            const nextMonthBtn = document.getElementById('next-month');
+
+            let currentNavDate = new Date();
+
+            function generateCalendar() {
+                const currentMonth = currentNavDate.getMonth();
+                const currentYear = currentNavDate.getFullYear();
+                
+                // Extraer tiempo real para el día actual
+                const realNow = new Date();
+                const isCurrentMonthYear = realNow.getMonth() === currentMonth && realNow.getFullYear() === currentYear;
+                const realCurrentDate = realNow.getDate();
+
+                if (calendarMonthElement) calendarMonthElement.textContent = `${monthsEs[currentMonth]} ${currentYear}`;
+
+                // Obtener el primer día del mes y la cantidad total de días
+                const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+                const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+                if (calendarDaysContainer) calendarDaysContainer.innerHTML = '';
+
+                // Espacios vacíos antes del primer día del mes
+                for (let i = 0; i < firstDay; i++) {
+                    const emptyDiv = document.createElement('div');
+                    if (calendarDaysContainer) calendarDaysContainer.appendChild(emptyDiv);
+                }
+
+                // Generar los días del mes
+                for (let i = 1; i <= daysInMonth; i++) {
+                    const dayDiv = document.createElement('div');
+                    dayDiv.classList.add('calendar-day');
+                    dayDiv.textContent = i;
+
+                    // Resaltar el día actual real
+                    if (isCurrentMonthYear && i === realCurrentDate) {
+                        dayDiv.classList.add('active');
+                    }
+
+                    // Efecto click interactivo en los días
+                    dayDiv.addEventListener('click', function() {
+                        document.querySelectorAll('.calendar-day').forEach(d => d.classList.remove('active'));
+                        this.classList.add('active');
+                    });
+
+                    if (calendarDaysContainer) calendarDaysContainer.appendChild(dayDiv);
+                }
+            }
+
+            // Eventos para cambiar de mes
+            if (prevMonthBtn) {
+                prevMonthBtn.addEventListener('click', () => {
+                    currentNavDate.setMonth(currentNavDate.getMonth() - 1);
+                    generateCalendar();
+                });
+            }
+            if (nextMonthBtn) {
+                nextMonthBtn.addEventListener('click', () => {
+                    currentNavDate.setMonth(currentNavDate.getMonth() + 1);
+                    generateCalendar();
+                });
+            }
+
+            generateCalendar();
+
+            // --- 4. Lógica del Reproductor Spotify ---
+            const musicToggleBtn = document.getElementById('music-toggle-btn');
+            const spotifyWidget = document.getElementById('spotify-widget');
+            const playPauseBtn = document.getElementById('sp-play-pause');
+            const currentTitle = document.getElementById('sp-current-title');
+            const progressFill = document.getElementById('sp-progress-fill');
+            const audioPlayer = document.getElementById('audio-player'); // Enlace real al audio
+            
+            // Elementos de volumen
+            const volumeSlider = document.getElementById('volume-slider');
+            const volumeIcon = document.getElementById('volume-icon');
+
+            let isPlaying = false;
+            let progressInterval;
+
+            // Mostrar/Ocultar widget de música
+            if (musicToggleBtn && spotifyWidget) {
+                musicToggleBtn.addEventListener('click', () => {
+                    spotifyWidget.classList.toggle('active');
+                });
+            }
+
+            // Ocultar al cambiar de sección (clic en otros botones de la barra lateral)
+            const otherSidebarIcons = document.querySelectorAll('.sidebar-icon:not(#music-toggle-btn)');
+            otherSidebarIcons.forEach(icon => {
+                icon.addEventListener('click', () => {
+                    if (spotifyWidget) spotifyWidget.classList.remove('active');
+                });
+            });
+
+            // Función para alternar Play/Pause (Lógica real)
+            function togglePlay() {
+                isPlaying = !isPlaying;
+                if (isPlaying) {
+                    if (playPauseBtn) {
+                        playPauseBtn.classList.remove('ph-play-circle');
+                        playPauseBtn.classList.add('ph-pause-circle');
+                    }
+                    
+                    // Iniciar audio real
+                    if(audioPlayer) {
+                        audioPlayer.play().catch(error => {
+                            console.error("Autoplay bloqueado por el navegador, se requiere interacción:", error);
+                        });
+                    }
+                    startProgress();
+                } else {
+                    if (playPauseBtn) {
+                        playPauseBtn.classList.remove('ph-pause-circle');
+                        playPauseBtn.classList.add('ph-play-circle');
+                    }
+                    
+                    // Pausar audio real
+                    if(audioPlayer) audioPlayer.pause();
+                    clearInterval(progressInterval);
+                }
+            }
+
+            // Sincronizar barra de progreso con el tiempo real del audio
+            function startProgress() {
+                clearInterval(progressInterval);
+                progressInterval = setInterval(() => {
+                    if (audioPlayer && audioPlayer.duration) {
+                        const percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+                        if (progressFill) progressFill.style.width = percent + '%';
+                    } else {
+                        // Respaldo visual si el audio falla en cargar
+                        let width = parseFloat(progressFill?.style.width) || 0;
+                        if (width >= 100) width = 0;
+                        width += 0.5;
+                        if (progressFill) progressFill.style.width = width + '%';
+                    }
+                }, 200); // Actualización más fluida
+            }
+
+            if (playPauseBtn) playPauseBtn.addEventListener('click', togglePlay);
+
+            // --- Lógica del Control de Volumen ---
+            if (volumeSlider && audioPlayer && volumeIcon) {
+                audioPlayer.volume = volumeSlider.value; // Inicializar volumen
+
+                volumeSlider.addEventListener('input', (e) => {
+                    const val = parseFloat(e.target.value);
+                    audioPlayer.volume = val;
+                    
+                    // Cambiar icono visualmente según el nivel de volumen
+                    if (val === 0) {
+                        volumeIcon.className = 'ph ph-speaker-x';
+                    } else if (val < 0.5) {
+                        volumeIcon.className = 'ph ph-speaker-low';
+                    } else {
+                        volumeIcon.className = 'ph ph-speaker-high';
+                    }
+                });
+
+                let lastVolume = 1;
+                volumeIcon.addEventListener('click', () => {
+                    if (audioPlayer.volume > 0) {
+                        lastVolume = audioPlayer.volume;
+                        audioPlayer.volume = 0;
+                        volumeSlider.value = 0;
+                        volumeIcon.className = 'ph ph-speaker-x';
+                    } else {
+                        audioPlayer.volume = lastVolume > 0 ? lastVolume : 1;
+                        volumeSlider.value = audioPlayer.volume;
+                        volumeIcon.className = audioPlayer.volume < 0.5 ? 'ph ph-speaker-low' : 'ph ph-speaker-high';
+                    }
+                });
+            }
+
+            // Reseteo visual al terminar la canción
+            if (audioPlayer) {
+                audioPlayer.addEventListener('ended', () => {
+                    isPlaying = false;
+                    if (playPauseBtn) {
+                        playPauseBtn.classList.remove('ph-pause-circle');
+                        playPauseBtn.classList.add('ph-play-circle');
+                    }
+                    if (progressFill) progressFill.style.width = '0%';
+                    clearInterval(progressInterval);
+                });
+            }
+
+            // --- 5. Lógica de Vistas (YouTube Embed) ---
+            const youtubeToggleBtn = document.getElementById('youtube-toggle-btn');
+            const homeView = document.getElementById('home-view');
+            const youtubeView = document.getElementById('youtube-view');
+            const backToHomeBtn = document.getElementById('back-to-home-btn');
+
+            // --- 7. Lógica de Vistas (Instagram Slider) ---
+            const instagramToggleBtn = document.getElementById('instagram-toggle-btn');
+            const instagramView = document.getElementById('instagram-view');
+            const backToHomeBtnIg = document.getElementById('back-to-home-btn-ig');
+
+            // --- 8. Lógica de Vistas (Heart / Favorites) ---
+            const heartToggleBtn = document.getElementById('heart-toggle-btn');
+            const heartView = document.getElementById('heart-view');
+            const backToHomeBtnHeart = document.getElementById('back-to-home-btn-heart');
+
+            // --- Botón Home Principal ---
+            const homeNavBtn = document.getElementById('home-nav-btn');
+
+            // Mostrar vista Home (Desde el botón de la barra lateral)
+            if (homeNavBtn && homeView) {
+                homeNavBtn.addEventListener('click', () => {
+                    if (youtubeView) youtubeView.classList.remove('active'); 
+                    if (instagramView) instagramView.classList.remove('active'); 
+                    if (heartView) heartView.classList.remove('active'); 
+                    homeView.classList.add('active');
+                    
+                    if (spotifyWidget) spotifyWidget.classList.remove('active');
+                });
+            }
+
+            // Mostrar vista de YouTube
+            if (youtubeToggleBtn && homeView && youtubeView) {
+                youtubeToggleBtn.addEventListener('click', () => {
+                    homeView.classList.remove('active');
+                    if (instagramView) instagramView.classList.remove('active'); 
+                    if (heartView) heartView.classList.remove('active'); // Cerrar heart si está abierto
+                    youtubeView.classList.add('active');
+                    
+                    if (spotifyWidget) spotifyWidget.classList.remove('active');
+                });
+            }
+
+            // Mostrar vista de Instagram
+            if (instagramToggleBtn && homeView && instagramView) {
+                instagramToggleBtn.addEventListener('click', () => {
+                    homeView.classList.remove('active');
+                    if (youtubeView) youtubeView.classList.remove('active'); 
+                    if (heartView) heartView.classList.remove('active'); // Cerrar heart si está abierto
+                    instagramView.classList.add('active');
+                    
+                    if (spotifyWidget) spotifyWidget.classList.remove('active');
+                });
+            }
+
+            // Mostrar vista de Corazón / Favorites
+            if (heartToggleBtn && homeView && heartView) {
+                heartToggleBtn.addEventListener('click', () => {
+                    homeView.classList.remove('active');
+                    if (youtubeView) youtubeView.classList.remove('active'); 
+                    if (instagramView) instagramView.classList.remove('active'); 
+                    heartView.classList.add('active');
+                    
+                    if (spotifyWidget) spotifyWidget.classList.remove('active');
+                });
+            }
+
+            // Volver a la vista principal (Desde YouTube)
+            if (backToHomeBtn && homeView && youtubeView) {
+                backToHomeBtn.addEventListener('click', () => {
+                    youtubeView.classList.remove('active');
+                    homeView.classList.add('active');
+                });
+            }
+
+            // Volver a la vista principal (Desde Instagram)
+            if (backToHomeBtnIg && homeView && instagramView) {
+                backToHomeBtnIg.addEventListener('click', () => {
+                    instagramView.classList.remove('active');
+                    homeView.classList.add('active');
+                });
+            }
+
+            // Volver a la vista principal (Desde Corazón)
+            if (backToHomeBtnHeart && homeView && heartView) {
+                backToHomeBtnHeart.addEventListener('click', () => {
+                    heartView.classList.remove('active');
+                    homeView.classList.add('active');
+                });
+            }
+
+            // --- 9. Generador de Partículas de Corazón (Estilo Anime) ---
+            const particlesContainer = document.getElementById('particles-container');
+            if (particlesContainer) {
+                particlesContainer.innerHTML = ''; // Limpiar previas si existían
+                const colors = ['var(--pastel-pink-dark)', 'var(--pastel-purple-light)', '#ffffff', '#ffc8ec']; 
+                for (let i = 0; i < 40; i++) { // Cantidad balanceada para mantener fluidez
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'anime-heart-container';
+                    wrapper.style.left = Math.random() * 100 + '%';
+                    
+                    // Movimiento ascendente fluido (12s a 22s)
+                    const duration = Math.random() * 10 + 12;
+                    wrapper.style.animationDuration = duration + 's'; 
+                    // USO DE DELAY NEGATIVO: Inicia la animación al instante, ya distribuida en la pantalla
+                    wrapper.style.animationDelay = '-' + (Math.random() * duration) + 's'; 
+
+                    const icon = document.createElement('i');
+                    // 75% corazones, 25% estrellas brillantes para el toque visual novel
+                    const isSparkle = Math.random() > 0.75; 
+                    icon.className = isSparkle ? 'ph-fill ph-star-four anime-heart' : 'ph-fill ph-heart anime-heart';
+                    icon.style.color = colors[Math.floor(Math.random() * colors.length)];
+                    
+                    // Tamaños variados y sutiles
+                    const baseSize = isSparkle ? (Math.random() * 10 + 8) : (Math.random() * 18 + 12);
+                    icon.style.fontSize = baseSize + 'px';
+                    
+                    // Desfase en el balanceo lateral inmediato
+                    icon.style.animationDuration = (Math.random() * 2 + 3) + 's'; 
+                    icon.style.animationDelay = '-' + (Math.random() * 3) + 's'; 
+
+                    wrapper.appendChild(icon);
+                    particlesContainer.appendChild(wrapper);
+                }
+            }
+
+            // --- Efecto Mágico en el Cursor (Sparkles Anime) ---
+            let lastDrawTime = 0;
+            const cursorColors = ['var(--pastel-pink-dark)', 'var(--pastel-purple-light)', '#ffffff'];
+            
+            document.addEventListener('mousemove', (e) => {
+                const now = Date.now();
+                // Limitar la generación de partículas para mayor elegancia y evitar saturación visual
+                if (now - lastDrawTime < 45) return; 
+                lastDrawTime = now;
+
+                const sparkle = document.createElement('i');
+                // Uso de estrella de 4 puntas para imitar el brillo característico del anime
+                sparkle.className = 'ph-fill ph-star-four anime-sparkle';
+                
+                sparkle.style.left = (e.clientX - 10) + 'px';
+                sparkle.style.top = (e.clientY - 10) + 'px';
+                sparkle.style.color = cursorColors[Math.floor(Math.random() * cursorColors.length)];
+                
+                // Tamaños pequeños y finos
+                const size = Math.random() * 10 + 6;
+                sparkle.style.fontSize = size + 'px';
+                
+                document.body.appendChild(sparkle);
+
+                // Autodestruir elemento
+                setTimeout(() => {
+                    sparkle.remove();
+                }, 800);
+            });
+
+            // --- 10. Lógica del Slider/Carrusel (Instagram) ---
+            const track = document.getElementById('ig-track');
+            const nextBtn = document.getElementById('ig-next');
+            const prevBtn = document.getElementById('ig-prev');
+            
+            if (track && nextBtn && prevBtn) {
+                const slides = Array.from(track.children);
+                let currentSlideIndex = 0;
+
+                const updateSlidePosition = () => {
+                    track.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+                };
+
+                nextBtn.addEventListener('click', () => {
+                    currentSlideIndex = (currentSlideIndex === slides.length - 1) ? 0 : currentSlideIndex + 1;
+                    updateSlidePosition();
+                });
+
+                prevBtn.addEventListener('click', () => {
+                    currentSlideIndex = (currentSlideIndex === 0) ? slides.length - 1 : currentSlideIndex - 1;
+                    updateSlidePosition();
+                });
+
+                // Soporte para Swipe (Deslizar con ratón o táctil)
+                let startX = 0;
+                let currentX = 0;
+                let isDragging = false;
+
+                const touchStart = (e) => {
+                    isDragging = true;
+                    startX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+                    track.style.transition = 'none'; // Quitar transición suave durante el arrastre
+                };
+
+                const touchMove = (e) => {
+                    if (!isDragging) return;
+                    currentX = e.type.includes('mouse') ? e.pageX : e.touches[0].clientX;
+                    const diff = currentX - startX;
+                    // Efecto visual al arrastrar
+                    track.style.transform = `translateX(calc(-${currentSlideIndex * 100}% + ${diff}px))`;
+                };
+
+                const touchEnd = () => {
+                    if (!isDragging) return;
+                    isDragging = false;
+                    const diff = currentX - startX;
+                    track.style.transition = 'transform 0.5s ease-in-out'; // Restaurar transición suave
+
+                    if (diff < -50) { // Deslizamiento a la izquierda
+                        currentSlideIndex = (currentSlideIndex === slides.length - 1) ? 0 : currentSlideIndex + 1;
+                    } else if (diff > 50) { // Deslizamiento a la derecha
+                        currentSlideIndex = (currentSlideIndex === 0) ? slides.length - 1 : currentSlideIndex - 1;
+                    }
+                    updateSlidePosition();
+                };
+
+                // Eventos Mouse
+                track.addEventListener('mousedown', touchStart);
+                track.addEventListener('mousemove', touchMove);
+                track.addEventListener('mouseup', touchEnd);
+                track.addEventListener('mouseleave', () => { if (isDragging) touchEnd(); });
+
+                // Eventos Touch (Móviles)
+                track.addEventListener('touchstart', touchStart);
+                track.addEventListener('touchmove', touchMove);
+                track.addEventListener('touchend', touchEnd);
+            }
+
+            // --- 11. Lógica del Lightbox (Zoom de Imágenes) ---
+            // AÑADIDO: También se seleccionan las imágenes .heart-photo para habilitar el zoom
+            const galleryImages = document.querySelectorAll('.carousel-slide img, .heart-photo');
+            const lightbox = document.getElementById('image-lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxCloseBtn = document.getElementById('lightbox-close-btn');
+
+            if (galleryImages.length > 0 && lightbox) {
+                // Abrir lightbox al hacer click en la imagen
+                galleryImages.forEach(img => {
+                    img.addEventListener('click', () => {
+                        lightboxImg.src = img.src;
+                        lightbox.classList.add('active');
+                    });
+                });
+
+                // Función para cerrar el lightbox
+                const closeLightbox = () => {
+                    lightbox.classList.remove('active');
+                    // Limpiar src después de la animación para evitar destellos visuales
+                    setTimeout(() => { 
+                        if(!lightbox.classList.contains('active')) lightboxImg.src = ''; 
+                    }, 300);
+                };
+
+                // Cerrar al hacer click en el botón X
+                lightboxCloseBtn.addEventListener('click', closeLightbox);
+
+                // Cerrar al hacer click fuera de la imagen (en el fondo oscuro)
+                lightbox.addEventListener('click', (e) => {
+                    if (e.target === lightbox) {
+                        closeLightbox();
+                    }
+                });
+
+                // Cerrar con la tecla Escape
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                        closeLightbox();
+                    }
+                });
+            }
+
+            // --- 12. Protección Básica contra Inspección (Click Derecho y Atajos) ---
+            // Deshabilitar el menú contextual (click derecho) en todo el documento
+            document.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+            });
+
+            // Deshabilitar atajos de teclado de herramientas de desarrollo
+            document.addEventListener('keydown', (e) => {
+                // Prevenir F12
+                if (e.key === 'F12' || e.keyCode === 123) {
+                    e.preventDefault();
+                }
+                // Prevenir Ctrl + Shift + I
+                if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.keyCode === 73)) {
+                    e.preventDefault();
+                }
+                // Prevenir Ctrl + Shift + J
+                if (e.ctrlKey && e.shiftKey && (e.key === 'J' || e.key === 'j' || e.keyCode === 74)) {
+                    e.preventDefault();
+                }
+                // Prevenir Ctrl + U (Ver código fuente)
+                if (e.ctrlKey && (e.key === 'U' || e.key === 'u' || e.keyCode === 85)) {
+                    e.preventDefault();
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>
