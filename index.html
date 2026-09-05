@@ -1373,6 +1373,11 @@
                           <li class="carousel-slide">
     <img src="gallery5.png" draggable="false" oncontextmenu="return false;" onerror="this.src='https://placehold.co/480x480/d6c6ff/5a4b73?text=Gallery+5'" alt="Gallery Image 5">
 </li>
+                                carousel-slide img {
+    max-width: 100%;    /* No permite que la imagen sea más grande que su contenedor */
+    max-height: 480px;  /* Evita que crezca más allá de la altura de tu marcador de posición */
+    object-fit: contain; /* Mantiene la proporción de la imagen sin deformarla */
+}
                             </ul>
                         </div>
 
