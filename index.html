@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Lani Xatspace</title>
+    <title>MIA XATSPACE</title>
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -28,11 +28,11 @@
            VARIABLES Y PALETA DE COLORES PASTEL
            ========================================= */
         :root {
-            --pastel-pink: #040404;
-            --pastel-purple-light: #040404;
-            --pastel-purple-mid: #040404;
-            --pastel-pink-dark: #040404;
-            --pastel-purple-dark: #040404;
+            --pastel-pink: #ffd6f3;
+            --pastel-purple-light: #f6e4ff;
+            --pastel-purple-mid: #e3d5ff;
+            --pastel-pink-dark: #ffc8ec;
+            --pastel-purple-dark: #d6c6ff;
             
             --text-main: #5a4b73;
             --text-muted: #8b7ca6;
@@ -90,7 +90,7 @@
             width: 110%;
             height: 110%;
             /* Nueva imagen de fondo proporcionada */
-            background-image: url('https://xatimg.com/image/6TbZK5K0Z9cR.jpg');
+            background-image: url('https://i.imgur.com/9aJ1juX.jpeg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -99,15 +99,23 @@
             z-index: -1;
         }
 
-
+        /* Overlay para asegurar que la paleta pastel domine */
+        .background-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 214, 243, 0.4) 0%, rgba(227, 213, 255, 0.4) 100%);
+            z-index: -1;
         }
 
         /* =========================================
            COMPONENTES GLASSMORPHISM
            ========================================= */
         .glass-panel {
-            background: rgba(10, 25, 47, 0.16);
-            backdrop-filter: blur(7px);
+            background: rgba(255, 255, 255, 0.16);
+            backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.30);
             border-top: 1px solid var(--glass-highlight);
@@ -117,8 +125,8 @@
         }
 
         .glass-inner {
-            background: rgba(30, 30, 30, 0.16); /* Ligeramente más transparente para elementos internos */
-            backdrop-filter: blur(5px);
+            background: rgba(255, 255, 255, 0.10); /* Ligeramente más transparente para elementos internos */
+            backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.25);
             border-radius: 20px;
@@ -1286,17 +1294,17 @@
                 <!-- Personaje Anime Central -->
                 <div class="center-character">
                     <!-- Se utiliza el nuevo render de Emilia, manteniendo la animación y estilos de máscara base -->
-                    <img src="https://xatimg.com/image/KvMMnJgOmm5G.png" 
+                    <img src="https://i.ibb.co/4nHCdzs3/Emilia-Media-Elfa.webp" 
                          style="border-radius: 40px; mask-image: linear-gradient(to bottom, black 80%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);" 
                          alt="Emilia Anime Character">
-                    <div class="vertical-text">Jabami Yumeko</div>
+                    <div class="vertical-text">カワイイ</div>
                 </div>
 
                 <!-- Widgets Derechos -->
                 <div class="right-widgets">
                     <div class="profile-header">
                         <div class="profile-badge glass-inner">
-                            <span>Sakura</span>
+                            <span>iMiaa</span>
                             <div class="profile-pic">
                                 <!-- Reemplazado icono de avatar por la imagen GIF de perfil -->
                                 <img src="profile.gif" onerror="this.src='https://placehold.co/35x35/d6c6ff/5a4b73?text=M'" alt="Profile GIF">
@@ -1306,7 +1314,7 @@
 
                     <!-- Nuevo encabezado MIA con efecto glitter -->
                     <div class="greeting-wrapper">
-                        <h2 class="mia-text">Lanita</h2>
+                        <h2 class="mia-text">MIA</h2>
                         <i class="ph-fill ph-star-four mia-sparkle" style="top: -5px; left: -15px; animation-delay: 0s; font-size: 1.2rem; color: var(--pastel-pink-dark);"></i>
                         <i class="ph-fill ph-sparkle mia-sparkle" style="bottom: 5px; right: -25px; animation-delay: 1.2s; font-size: 1.5rem; color: var(--pastel-purple-light);"></i>
                         <i class="ph-fill ph-star-four mia-sparkle" style="top: 40%; left: 45%; animation-delay: 0.6s; font-size: 1rem; color: #fff;"></i>
@@ -1315,13 +1323,13 @@
                     <div class="cards-grid">
                         <!-- Imágenes Aesthetic (GIFs animados intactos) -->
                         <div class="card card-tall-1">
-                            <img src="https://i.imgur.com/1VobE14.jpeg" alt="Aesthetic GIF 1">
+                            <img src="https://i.imgur.com/RVLAN4C.gif" alt="Aesthetic GIF 1">
                         </div>
                         <div class="card card-tall-2">
-                            <img src="https://xatimg.com/image/zuQekiAKYaT3.jpg" alt="Aesthetic GIF 2">
+                            <img src="https://i.imgur.com/0BoAVtK.gif" alt="Aesthetic GIF 2">
                         </div>
                         <div class="card card-square">
-                            <img src="https://xatimg.com/image/DqcVinu0h0eh.jpg" alt="Aesthetic GIF 3">
+                            <img src="https://i.imgur.com/RECTDoO.gif" alt="Aesthetic GIF 3">
                         </div>
                     </div>
                 </div>
@@ -1337,7 +1345,7 @@
                     <h2>Youtube Video</h2>
                 </div>
                 <div class="yt-iframe-wrapper">
-                    <iframe src="https://www.youtube.com/embed/sf02ugzPFE4" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe src="https://www.youtube.com/embed/E4XLXEg2rg8" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 </div>
             </div>
 
